@@ -19,11 +19,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Order {
+public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(updatable = false, nullable = false)
+    @Column(name = "id", columnDefinition = "UUID", updatable = false, nullable = false)
     private UUID id;
 
     @Column(name = "order_number", length = 50, nullable = false)
@@ -61,12 +61,23 @@ public class Order {
 
     @Builder.Default
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<OrderProduct> orderProducts = new ArrayList<>();
+    private List<OrderProductEntity> orderProducts = new ArrayList<>();
 
     @PrePersist
     private void prePersist() {
         if (orderDate == null) {
             orderDate = LocalDateTime.now();
         }
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+        if (updatedAt == null) {
+            updatedAt = LocalDateTime.now();
+        }
+    }
+
+    @PreUpdate
+    private void preUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 }

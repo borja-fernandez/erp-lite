@@ -16,11 +16,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Product {
+public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(updatable = false, nullable = false)
+    @Column(name = "id", columnDefinition = "UUID", updatable = false, nullable = false)
     private UUID id;
 
     @Column(name = "sku", length = 50, nullable = false, unique = true)
@@ -29,7 +29,7 @@ public class Product {
     @Column(name = "name", length = 200, nullable = false)
     private String name;
 
-    @Column(name = "description", columnDefinition = "text")
+    @Column(name = "description")
     private String description;
 
     @Column(name = "price", precision = 15, scale = 2, nullable = false)
@@ -56,4 +56,20 @@ public class Product {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    private void prePersist() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+        if (updatedAt == null) {
+            updatedAt = LocalDateTime.now();
+        }
+    }
+
+    @PreUpdate
+    private void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
 }

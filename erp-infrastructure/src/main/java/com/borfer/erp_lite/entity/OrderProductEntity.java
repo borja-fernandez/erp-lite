@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -13,11 +14,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderProduct {
+public class OrderProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(updatable = false, nullable = false)
+    @Column(name = "id", columnDefinition = "UUID", updatable = false, nullable = false)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -26,7 +27,7 @@ public class OrderProduct {
             nullable = false,
             foreignKey = @ForeignKey(name = "fk_order_products_order")
     )
-    private Order order;
+    private OrderEntity order;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
@@ -34,7 +35,7 @@ public class OrderProduct {
             nullable = false,
             foreignKey = @ForeignKey(name = "fk_order_products_product")
     )
-    private Product product;
+    private ProductEntity product;
 
     @Column(name = "product_name", length = 200, nullable = false)
     private String productName;
@@ -47,4 +48,14 @@ public class OrderProduct {
 
     @Column(name = "subtotal", precision = 15, scale = 2, nullable = false)
     private BigDecimal subtotal;
+
+    @PrePersist
+    private void prePersist() {
+        if (unitPrice != null && quantity != null && subtotal == null) {
+            subtotal = unitPrice.multiply(new BigDecimal(quantity));
+        }
+        if(product != null && productName.isEmpty()) {
+            productName = product.getName();
+        }
+    }
 }
