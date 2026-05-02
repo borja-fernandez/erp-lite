@@ -1,4 +1,4 @@
-package com.borfer.erp_lite.entity;
+package com.borfer.erp_lite.persistence.jpa.entity;
 
 public enum OrderStatus {
     PENDING,

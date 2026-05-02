@@ -1,4 +1,4 @@
-package com.borfer.erp_lite.document;
+package com.borfer.erp_lite.persistence.mongo.document;
 
 public record CatalogItem(
         String id,

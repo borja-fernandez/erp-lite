@@ -1,4 +1,4 @@
-package com.borfer.erp_lite.document;
+package com.borfer.erp_lite.persistence.mongo.document;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;

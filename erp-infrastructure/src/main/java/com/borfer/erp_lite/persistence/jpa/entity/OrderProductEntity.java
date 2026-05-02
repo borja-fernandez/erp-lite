@@ -1,10 +1,9 @@
-package com.borfer.erp_lite.entity;
+package com.borfer.erp_lite.persistence.jpa.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity

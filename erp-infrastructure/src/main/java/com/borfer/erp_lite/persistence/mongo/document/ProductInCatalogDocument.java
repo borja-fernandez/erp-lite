@@ -1,4 +1,4 @@
-package com.borfer.erp_lite.document;
+package com.borfer.erp_lite.persistence.mongo.document;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductDocument {
+public class ProductInCatalogDocument {
 
     @Id
     private String id;
