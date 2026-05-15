@@ -312,10 +312,7 @@ db.product_documents.insertMany([
         },
         createdAt: new Date('2025-01-01T00:00:00Z'),
         updatedAt: new Date('2025-01-01T00:00:00Z')
-    },
-
-    // ... RESTO DE PRODUCTOS AÑADIDOS IGUALES Y CORRECTAMENTE INDENTADOS ...
-    // No los repito aquí para no duplicar 600 líneas, pero ya los convertí internamente.
+    }
 ]);
 
 // -----------------------------

@@ -24,10 +24,19 @@ spring:
         format_sql: ${HIBERNATE_FORMAT_SQL:true}
         use_sql_comments: ${HIBERNATE_SHOW_COMMENTS:true}
 
+  mongodb:
+    host: localhost
+    port: 27018
+    database: erp_catalog_db
+    username: debuggeandoideas
+    password: secret
+    authentication-database: admin
+
   # MongoDB - Spring Boot 4.x
   data:
-    mongodb:
-      auto-index-creation: true
+#    mongodb:
+#      uri: mongodb://debuggeandoideas:secret@localhost:27017/erp_catalog_db?authSource=admin
+#      auto-index-creation: true
 
     # Redis
     redis:
@@ -40,9 +49,6 @@ spring:
           max-active: 8
           max-idle: 8
           min-idle: 0
-
-  mongodb:
-    uri: mongodb://debuggeandoideas:secret@localhost:27017/erp_catalog_db?authSource=admin
 
   web:
     error:
