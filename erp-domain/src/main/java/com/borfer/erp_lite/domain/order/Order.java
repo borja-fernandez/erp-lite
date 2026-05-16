@@ -49,7 +49,7 @@ public class Order extends AggregateRoot<OrderId> {
 
         OrderId id = OrderId.generate();
         Order order = new Order(id, orderNumber, customer, items, createdBy);
-        order.validateItems();
+        validateItems(items);
         order.registerEvent(new OrderCreated(
                 id,
                 customer.customerId(),
@@ -126,10 +126,31 @@ public class Order extends AggregateRoot<OrderId> {
         return Collections.unmodifiableList(items);
     }
 
-    private void validateItems() {
-        if (this.items == null || this.items.isEmpty()) {
-            throw new IllegalArgumentException("Order must have at least one item");
+    private static void validateItems(List<OrderItem> items) {
+        if (items.isEmpty()) {
+            throw new IllegalArgumentException("Order items cannot be empty");
         }
+
+        java.util.Currency firstCurrency = items.get(0).getUnitPrice().currency();
+
+        items.forEach(item -> {
+            if (!item.getUnitPrice().currency().equals(firstCurrency)) {
+                throw new IllegalArgumentException(
+                        "All items must have the same currency. Expected: " + firstCurrency +
+                                ", found: " + item.getUnitPrice().currency()
+                );
+            }
+
+            // Validate subtotal calculation
+            Money calculatedSubtotal = item.calculateSubtotal();
+            if (!item.getSubtotal().equals(calculatedSubtotal)) {
+                throw new IllegalArgumentException(
+                        "Item subtotal mismatch. Expected: " + calculatedSubtotal +
+                                ", found: " + item.getSubtotal()
+                );
+            }
+
+        });
     }
 
     private void validateTransition(OrderStatus nextStatus) {
